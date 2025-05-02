@@ -16,7 +16,6 @@ def plot(comm):
     plt.show()
 
 def calculate(comm):
-    print('aiueo')
     # initialize neural network object
 
     # initialize spike list
