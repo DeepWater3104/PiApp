@@ -1,7 +1,8 @@
 import matplotlib.pyplot as plt
 from mpi4py import MPI
+from functools import partial
 
-def motion(event):
+def motion(ln, event):
     x = [event.xdata]
     y = [event.ydata]
 
@@ -12,10 +13,11 @@ def plot(comm):
     plt.figure()
     ln, = plt.plot([],[],'x')
     
-    plt.connect('motion_notify_event', motion)
+    #plt.connect('motion_notify_event', motion)
+    plt.connect('motion_notify_event', partial(motion, ln))
     plt.show()
 
-def calculate(comm):
+#def calculate(comm):
     # initialize neural network object
 
     # initialize spike list
@@ -35,5 +37,5 @@ if __name__ == '__main__':
 
     if rank == 0:
         plot(comm)
-    else:
-        calcualte(comm)
+    #else:
+    #    calcualte(comm)
