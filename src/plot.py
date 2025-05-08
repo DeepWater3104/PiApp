@@ -1,20 +1,26 @@
-import matplotlib.pyplot as plt
-from mpi4py import MPI
-from functools import partial
-
-def motion(ln, event):
+import numpy as np
+def motion(ln, ax, event):
     x = [event.xdata]
     y = [event.ydata]
+
+    heatmap_data = np.random.random((100, 100))
+    heatmap = ax.imshow(heatmap_data, cmap='hot', interpolation='nearest', alpha=0.6)
 
     ln.set_data(x,y)
     plt.draw()
 
+#def neuralactivity(ln):
+#    #spikes = np.zeros((1000, 1000))
+#    ln.histgram2d(spikes)
+
 def plot(comm):
     plt.figure()
-    ln, = plt.plot([],[],'x')
+    fig, ax = plt.subplots()
+    ln, = plt.plot([],[],'x', color='blue', markersize=10)
     
     #plt.connect('motion_notify_event', motion)
-    plt.connect('motion_notify_event', partial(motion, ln))
+    plt.connect('motion_notify_event', partial(motion, ln, ax))
+    #neuralactivity(ln)
     plt.show()
 
 #def calculate(comm):
@@ -30,12 +36,17 @@ def plot(comm):
 
 
 if __name__ == '__main__':
-    # get rank
+    # initialize MPI
+    from mpi4py import MPI
     comm = MPI.COMM_WORLD
     size = comm.Get_size()
     rank = comm.Get_rank()
 
+    import time
+
     if rank == 0:
+        import matplotlib.pyplot as plt
+        from functools import partial
         plot(comm)
     #else:
     #    calcualte(comm)
