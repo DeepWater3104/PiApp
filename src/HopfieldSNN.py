@@ -20,7 +20,6 @@ class snn():
         for pre in range(params['num_neurons']):
             for post in range(params['num_neurons_innode']):
                 self.syn_w[pre, post] = pattern[pre] * pattern[post+params['num_neurons_offset']] / 10
-        #self.syn_delay =  (np.random.randn(params['num_neurons'], params['num_neurons_innode']) + 1) / self.dt
         self.syn_delay = np.floor((np.random.randn(params['num_neurons'], params['num_neurons_innode']) + 1) / self.dt).astype(int)
         self.syn_g     =  np.zeros(params['num_neurons_innode'])
 

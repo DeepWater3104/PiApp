@@ -26,7 +26,6 @@ def motion(ln, ax, num_neurons_percol, userinput, event):
     x = [event.xdata]
     y = [event.ydata]
 
-    # insert to userinput array
     if event.xdata != None and event.ydata != None:
         userinput[int(math.floor(event.ydata))*num_neurons_percol + int(math.floor(event.xdata))] = 1
 
@@ -53,15 +52,6 @@ def slvprocess(comm, spikes_innode, params, pattern):
     userinput = np.zeros(params['num_neurons'])
     delay_left = np.zeros((params['num_neurons'], params['num_neurons_innode']))
     while True:
-        #time_index += 1
-        #if time_index in range(params['num_neurons_offset'], params['num_neurons_offset']+params['num_neurons_innode']):
-        #    spikes_innode[time_index-params['num_neurons_offset']] += 1
-        #if time_index % 5 == 0:
-        #    data = comm.allgather(spikes_innode)
-        #    comm.Bcast(userinput, root=0)
-        #    spikes_innode = np.zeros(params['num_neurons_innode'])
-
-
         time_index += 1
         snn_each.update_LIF(spikes_innode, userinput, time_index) 
         snn_each.update_synapse(delay_left, time_index)
@@ -95,7 +85,6 @@ if __name__ == '__main__':
         import matplotlib.pyplot as plt
         from matplotlib.animation import FuncAnimation
         import matplotlib
-        #matplotlib.use('TkAgg')  # バックエンドをTkAggに変更
         from functools import partial
         import threading
         mstprocess(comm, spikes_innode, network_params)
